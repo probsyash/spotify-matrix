@@ -514,7 +514,9 @@ def poll_spotify(
         except Exception as exc:
             print(f"Spotify poll failed: {exc}", flush=True)
 
-        stop_event.wait(poll_seconds)
+        with state_lock:
+            currently_playing = state.is_playing
+        stop_event.wait(poll_seconds if currently_playing else max(poll_seconds, 30.0))
 
 
 def run(args: argparse.Namespace) -> None:
