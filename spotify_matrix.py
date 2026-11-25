@@ -482,6 +482,23 @@ def poll_spotify(
     last_status: str | None = None
 
     while not stop_event.is_set():
+        QUIET_START, QUIET_END = 1, 10
+        hour = time.localtime().tm_hour
+        if QUIET_START < QUIET_END:
+            in_quiet = QUIET_START <= hour < QUIET_END
+        else:
+            in_quiet = hour >= QUIET_START or hour < QUIET_END
+        if in_quiet:
+            with state_lock:
+                state.art_key = None
+                state.image_url = None
+                state.image = None
+                state.is_playing = False
+            if last_status != "quiet hours":
+                print("Spotify: quiet hours, not polling", flush=True)
+                last_status = "quiet hours"
+            stop_event.wait(300)
+            continue
         try:
             playback = spotify.get_currently_playing()
             art = playback_art_from_response(playback)
