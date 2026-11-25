@@ -7,7 +7,7 @@ Wants=network-online.target
 WorkingDirectory=/home/probsyash/spotify-matrix
 Environment=PYTHONUNBUFFERED=1
 Environment=BROWSER=echo
-ExecStart=/home/probsyash/spotify-matrix/.venv/bin/python /home/probsyash/spotify-matrix/spotify_matrix.py --rows 64 --cols 64 --chain-length 1 --parallel 1 --gpio-slowdown 4 --no-hardware-pulse --hardware-mapping adafruit-hat
+ExecStart=/home/probsyash/spotify-matrix/.venv/bin/python /home/probsyash/spotify-matrix/spotify_matrix.py --rows 64 --cols 64 --chain-length 1 --parallel 1 --gpio-slowdown 4 --no-hardware-pulse --hardware-mapping adafruit-hat --poll-seconds 5
 Restart=always
 RestartSec=10
 

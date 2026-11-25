@@ -125,6 +125,7 @@ class SpotifyClient:
             return self.get_currently_playing()
         if response.status == 429:
             retry_after = int(response.headers.get("Retry-After", "5"))
+            print(f"Spotify rate limited, waiting {retry_after}s", flush=True)
             time.sleep(max(retry_after, 1))
             return None
         if response.status != 200:
